@@ -147,7 +147,6 @@ public class HBuildTask extends RunTask {
 		// System.err.println("rate: " + rate + " netsize: " + netSize);
 
 		long t = Math.max((long) (Math.log(re.nextDouble()) / (rate * -1)), 1);
-		System.err.print("t = " + t + " rate = " + rate + ", ");
 		return t;
 	}
 
