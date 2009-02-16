@@ -244,7 +244,7 @@ public class Darknet extends Simulator<DarknetNode, CircleKey> {
 		CACHE_SIZE = st.getInt("dnCacheSize",STORE_SIZE);                 // Default: same size as store
 		VARDIST_RESOLUTION = st.getInt("varDistResolution", 100);
 		N_BEST = st.getInt("dnNBest",3);
-		MAXPEERS = st.getInt("dnMaxPeers",50);
+		MAXPEERS = st.getInt("dnMaxPeers",20);
 		RECACHE_PROB = (float) st.getDouble("dnRecacheProb",0.0);         // Whether to recache data after each successful request
 		RELINK_PROB = (float) st.getDouble("dnRelinkProb",1.0);
 		DARKLINKS_ONLY_PROB = (float) st.getDouble("dnLinksOnlyProb",1.0);
@@ -315,9 +315,9 @@ public class Darknet extends Simulator<DarknetNode, CircleKey> {
 
 	// Not depending on oldNode (linking to a living node) at the moment... 
 	public boolean join(DarknetNode newNode, DarknetNode oldNode, Feedback fb) {
-		int cost = newNode.join();
+		int cost = newNode.join();   		// Always connect friends
 
-		if (newNode.isOpennet()) {
+		if (newNode.isOpennet()) {		// Maybe connect strangers
 		   opennetBootstrap(newNode, OPENNET_MINPEERS);
 		   n_opennet_active++;
 		}
@@ -549,7 +549,7 @@ public class Darknet extends Simulator<DarknetNode, CircleKey> {
 
 		int srcNet = n.person().network(), origNet = ds.getData(k).sourceNetwork();
 
-		fb.feedback(RunTask.SEARCH, d != null, new double[] {route.size(),   d != null ? route.size() : 0,   srcNet,   origNet});
+		fb.feedback(RunTask.SEARCH, d != null, new double[] {route.size(),   d != null ? route.sizeForward() : 0,   srcNet,   origNet});
 		return d;
 	}
 

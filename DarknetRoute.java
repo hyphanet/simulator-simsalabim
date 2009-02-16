@@ -62,6 +62,11 @@ public class DarknetRoute implements Iterable<DarknetNode>, Contains<DarknetNode
 		return route.size();
 	}
 
+	// Number of steps until this route found its destination (or gave up)
+	public int sizeForward() {
+		return route.size() - retpath().size();
+	}
+
 	public Iterator<DarknetNode> iterator() {
 		return route.iterator();
 	}
@@ -124,7 +129,7 @@ public class DarknetRoute implements Iterable<DarknetNode>, Contains<DarknetNode
 	//}
 
 	/**
-	 * ASSUMES: a successful query route (source ... dest ... source)
+	 * ASSUMES: a successful request/insert route (source ... dest ... source)
 	 *
 	 * Returns the return path (dest to source)
 	 */
